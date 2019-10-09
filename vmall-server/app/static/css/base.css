@@ -1,0 +1,10 @@
+.base-footer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+}
+
+

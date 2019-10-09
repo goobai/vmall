@@ -1,0 +1,64 @@
+{% extends 'base.html ' %}
+
+{% block requires %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+
+{% endblock %}
+{% block main %}
+<div class="row home-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 main-content" style="height: 1100px;background-color: lightblue">
+                <h3>标题</h3>
+                <p>
+                    概述 经过几天鏖战终于完成了lab2，本lab实现一个支持并发操作的B+树。简直B格满满。 B+树 为什么需要B+树
+                    B+树本质上是一个索引数据结构。比如我们要用某个给定的ID去检索某个student记录，如果没有索引的话，我们可能从第一条记录开始遍历每一个student记录，直到找到某个ID和我们 ...概述
+                    经过几天鏖战终于完成了lab2，本lab实现一个支持并发操作的B+树。简直B格满满。 B+树 为什么需要B+树
+                    B+树本质上是一个索引数据结构。比如我们要用某个给定的ID去检索某个student记录，如果没有索引的话，我们可能从第一条记录开始遍历每一个student记录，直到找到某个ID和我们 ...概述
+                    经过几天鏖战终于完成了lab2，本lab实现一个支持并发操作的B+树。简直B格满满。 B+树 为什么需要B+树
+                    B+树本质上是一个索引数据结构。比如我们要用某个给定的ID去检索某个student记录，如果没有索引的话，我们可能从第一条记录开始遍历每一个student记录，直到找到某个ID和我们 ...概述
+                    经过几天鏖战终于完成了lab2，本lab实现一个支持并发操作的B+树。简直B格满满。 B+树 为什么需要B+树
+                    B+树本质上是一个索引数据结构。比如我们要用某个给定的ID去检索某个student记录，如果没有索引的话，我们可能从第一条记录开始遍历每一个student记录，直到找到某个ID和我们 ...
+                </p>
+            </div>
+            <div class="col-4 " style="background-color: cadetblue">
+                <div id="fixPara" >
+                    <p>
+                        左边内容滚动的时候右边先对位置不再改变
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+<script type="text/javascript">
+    window.onload =
+        function () {
+            var oDiv = document.getElementById("fixPara"),
+                H = 0,
+                Y = oDiv
+            while (Y) {
+                H += Y.offsetTop;
+                Y = Y.offsetParent;
+            }
+            window.onscroll = function () {
+                var s = document.body.scrollTop || document.documentElement.scrollTop
+                if (s > H) {
+                    oDiv.style = "position:fixed;"
+                } else {
+                    oDiv.style = ""
+                }
+            }
+        }
+</script>
+{% endblock %}

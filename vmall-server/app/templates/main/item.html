@@ -1,0 +1,222 @@
+{% extends 'base.html ' %}
+
+{% block requires %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/item.css') }}">
+{% endblock %}
+
+{% block main %}
+    <!---第一部分-->
+    <div class="row">
+        <div class="container">
+            <div class="row  " id="detail">
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="swiper-container gallery-top">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b1.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b2.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b3.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b4.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b5.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/since.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/since.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/since.jpg') }}"
+                                        alt="">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="swiper-container gallery-thumbs">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b1.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b2.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b3.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b4.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/s10+b5.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/since.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/since.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        src="{{ url_for('static',filename='img/item/since.jpg') }}"
+                                        alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7  detail">
+                    <div class="d-title">
+                        <h4>【限时限量低价抢】Apple/苹果 iPhone 7 Plus 32G 全网通4G手机iPhone7plus</h4>
+                    </div>
+                    <div class="d-price">
+                        <dl>
+                            <dt>价格</dt>
+                            <dd><span>￥</span> <span>3399</span></dd>
+                        </dl>
+                    </div>
+                    <hr>
+                    <div class="d-choose-wrap">
+                        <div class="d-spec">
+                            <dl>
+
+                                <dt>颜色</dt>
+                                <dd>
+                                    <div class="row">
+                                        <div class="col-2 d-spec-item">黑色</div>
+                                        <div class="col-2 d-spec-item">黑色</div>
+                                        <div class="col-2 d-spec-item">黑色</div>
+                                    </div>
+
+                                </dd>
+                                <dt>版本</dt>
+                                <dd>
+                                    <div class="row">
+                                        <div class="col-2 d-spec-item">8GB+128GB</div>
+                                        <div class="col-2 d-spec-item">8GB+512GB</div>
+                                        <div class="col-2 d-spec-item">12GB+1TB</div>
+                                    </div>
+
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="d-amount">
+                            <dl>
+                                <dt>数量</dt>
+                                <dd><span><input class="d-amount-text" type="text"></span> <span>件</span></dd>
+                            </dl>
+                        </div>
+                        <div class="d-btn-group ">
+                            <button type="button" class="col-3 btn btn-primary">加入购物车</button>
+                            <button type="button" class="col-3 btn btn-primary">立即购买</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <!---第二部分-->
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    三星官方旗舰店
+                    10天猫10年店
+                    描 述
+                    4.8
+                    服 务
+                    4.8
+                    物 流
+                    4.8
+
+                </div>
+                <div class="col-md-9"><!--标签-->
+                    <div class="row  ">
+                        <div class="list-group list-group-horizontal ">
+                            <a data-toggle="list" class="list-group-item list-group-item-action active "
+                               href="#tab-detail">商品详情</a>
+                            <a data-toggle="list" class="list-group-item list-group-item-action "
+                               href="#tab-firefox">参数规格</a>
+                            <a data-toggle="list" class="list-group-item list-group-item-action "
+                               href="#tab-comment">用户评价</a>
+                        </div>
+                    </div>
+                    <!--标签的内容-->
+                    <div class="row">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab-detail">
+                                <div class="col-md-7">
+                                    <h1>chrome</h1>
+                                    <p>Google Chrome,又称chrome浏览器，是一个由Google（谷歌）公司开发的网页浏览器。</p>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab-firefox">
+                                <h1>firefox</h1>
+                                <p>firefox,又称firefox浏览器，是一个由firefox（谷歌）公司开发的网页浏览器。</p>
+                            </div>
+                            <div class="tab-pane fade" id="tab-comment">
+                                <h1>safari</h1>
+                                <p>safari,又称safari浏览器，是一个由safari（谷歌）公司开发的网页浏览器。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js"></script>
+    <!-- Initialize Swiper -->
+    <script>
+        var galleryThumbs = new Swiper('.gallery-thumbs', {
+            spaceBetween: 2,
+            slidesPerView: 5,
+            freeMode: true,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+        });
+        var galleryTop = new Swiper('.gallery-top', {
+            spaceBetween: 2,
+            thumbs: {
+                swiper: galleryThumbs
+            }
+        });
+        $(document).ready(function () {
+            $(".d-spec-item").click(function () {
+                $(this).parent().children().removeClass("selected")
+                $(this).toggleClass("selected");
+            });
+
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,5 @@
+export const GET_USER_INFO = 'GET_USER_INFO'
+export const RecordAccessToken = 'RecordAccessToken'
+export const RecordRefreshToken = 'RecordRefreshToken'
+export const RecordLoginState = 'RecordLoginState'
+export const RecordUserInfo = 'RecordUserInfo'

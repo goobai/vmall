@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='components/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+
+    <script src="{{ url_for('static',filename='components/axios/axios.js') }}"></script>
+    <script src="{{ url_for('static',filename='components/vue/vue.js') }}"></script>
+
+</head>
+<body>
+<div class="container" id="app">{{ message }}
+    <div class="row">
+        <label for=""> name</label>
+        <input type="text" v-model="username">
+    </div>
+    <div class="row">
+        <label for=""> password</label>
+        <input type="password" v-model="password">
+    </div>
+    <div class="row">
+        <button v-on:click="login">登陆</button>
+        <button v-on:click="sendMail">重置密码</button>
+        <input v-model="access_token"> </input>
+    </div>
+
+
+    <div class="row">
+        <div id="aplayer">
+
+        </div>
+    </div>
+    <div class="row">
+        <img src="../static/img/headimg.jpg" alt="">
+    </div>
+</div>
+<script>
+
+    const ap1 = new APlayer({
+        element: document.getElementById('aplayer'),
+        mini: false,
+        autoplay: false,
+        lrcType: false,
+        mutex: true,
+        preload: 'metadata',
+        audio: [{
+            name: '薛之谦',
+            artist: '演员',
+            url: '/static/演员.mp3',
+        }]
+    });
+    // Set config defaults when creating the instance
+    axios.defaults.headers['Content-Type'] = 'application/json';
+
+
+    // Alter defaults after instance has been created
+    var app = new Vue({
+        el: "#app",
+        data: {
+            access_token: '',
+            refresh_token: '',
+            username: '',
+            password: ''
+        },
+        methods: {
+            login: function () {
+                _this = this;
+                axios.post('/api/token', {
+                    username: _this.username.trim(),
+                    password: _this.password.trim()
+                })
+                    .then(function (response) {
+                        localStorage.setItem('access_token', response.data.data.access_token)
+                        localStorage.setItem('refresh_token', response.data.data.refresh_token)
+                        console.log(response.data.data)
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
+            trimfunc: function () {
+                this.username = this.username.replace(/\s+/g, "")
+            },
+            sendMail: function () {
+                _this = this;
+                axios.get('/send/mail')
+                    .then(function (response) {
+                        console.log(response.data)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

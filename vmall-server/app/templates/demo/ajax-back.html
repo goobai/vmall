@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="{{ url_for('static',filename='components/jquery/jquery.min.js') }}"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<form action="#">
+
+<input type="text" name="username" id="username">
+<input type="password" name="password" id="password">
+<button onclick="post_btn()">点击</button>
+    </form>
+
+<script type="text/javascript">
+    function post_btn() {
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var data = {
+            data: JSON.stringify({
+                'username': username,
+                'password': password
+            }),
+        }
+        $.ajax({
+            url: '/post',
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function (res) {
+                console.log(res)
+                console.log(0)
+
+            },
+            error: function (res) {
+                console.log(res);
+                console.log(1)
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

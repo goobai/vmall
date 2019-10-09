@@ -1,0 +1,97 @@
+
+.swiper-container {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.swiper-slide {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery-top .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    border: rgb(198, 198, 198) solid 1px;
+}
+
+.gallery-top {
+    max-width: 400px;
+    max-height: 400px;
+    height: 100%;
+    width: 100%;
+}
+
+.gallery-thumbs {
+    height: 82px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 20px;
+}
+
+.gallery-thumbs .swiper-slide img {
+    height: 60px;
+    width: 60px;
+    top: 0;
+    left: 0;
+}
+
+.gallery-thumbs .swiper-slide-thumb-active img {
+    border: rgb(0, 0, 0) solid 1px;
+}
+
+.d-price, .d-spec, .d-amount {
+    padding: 5px 0;
+}
+
+.d-price dl, .d-spec dl, .d-amount dl {
+    line-height: 30px;
+}
+
+.d-price dt, .d-spec dt, .d-amount dt {
+    color: #999;
+    font-size: 12px;
+    text-align: left;
+    float: left;
+    width: 60px;
+    margin: 0 0 0 8px;
+    vertical-align: center;
+}
+
+.d-price dl dd span {
+    color: #FF0036;
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.d-spec .d-spec-item {
+    border: 1px solid #b8b7bd;
+    margin-right: 10px;
+    font-size: 12px;
+    text-align: center;
+    padding: 1px 2px;
+}
+
+.d-spec .d-spec-item.selected {
+    border: #FF0036 solid 1px;
+    margin-right: 10px;
+    font-size: 12px;
+    text-align: center;
+    padding: 1px 2px;
+}
+
+
+
+.d-amount-text {
+    width: 40px;
+    text-align: center;
+}
+
+.d-amount

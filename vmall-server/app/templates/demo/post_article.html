@@ -1,0 +1,121 @@
+{% extends 'base.html ' %}
+
+{% block requires %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+{% endblock %}
+{% block main %}
+<div class="row home-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 main-content" style="height: 11000px;background-color: lightblue">
+                <div class="container" id="editor-container">
+                </div>
+            </div>
+            <div class="col-md-4 " style="background-color: cadetblue">
+                <div id="fixPara" class="text-wrap">
+                    <p>
+                        左边内容滚动的时候右边先对位置不再改变
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script type="text/javascript">
+    window.onload =
+        function () {
+            var oDiv = document.getElementById("fixPara"),
+                H = 0,
+                Y = oDiv
+            while (Y) {
+                H += Y.offsetTop;
+                Y = Y.offsetParent;
+            }
+            window.onscroll = function () {
+                var s = document.body.scrollTop || document.documentElement.scrollTop
+                if (s > H) {
+                    oDiv.style = "position:fixed;top:60px;"
+                } else {
+                    oDiv.style = ""
+                }
+            }
+        }
+    var toolbarOptions = [
+        [{'header': [1, 2, 3, 4, false]}],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+        [{'header': 1}, {'header': 2}],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{'align': []}],
+        [ 'code-block']
+        // ['image', 'code-block']
+
+    ];
+    var quill = new Quill('#editor-container', {
+        modules: {toolbar: toolbarOptions},
+        theme: 'snow'
+    });
+    quill.on('text-change', update);
+    update();
+
+    function update(delta) {
+        var contents = quill.getContents();
+
+        console.log('contents', contents);
+        var html = "contents = " + JSON.stringify(contents, null, 2);
+        if (delta) {
+            console.log('change', delta)
+            html = "change = " + JSON.stringify(delta, null, 2) + "\n\n" + html;
+        }
+        html = quill.container.firstChild.innerHTML
+        console.log('html=', html)
+    }
+
+
+    toolbar = quill.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+        handlerImage();
+    });
+    /* 上传图片*/
+    function handlerImage() {
+        var Imageinput = document.createElement('input');
+        Imageinput.setAttribute('type', 'file');
+        Imageinput.setAttribute('name', 'upload_file')
+        Imageinput.setAttribute('accept', 'image/png, image/gif, image/jpeg');
+        Imageinput.classList.add('ql-image');
+        Imageinput.addEventListener('change', () => {
+            var file = Imageinput.files[0];
+            var formData = new FormData();
+            formData.append('upload_file', file);
+            if (Imageinput.files != null && Imageinput.files[0] != null) {
+                $.ajax({
+                    url: '/upload',
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        var range = quill.getSelection(true);
+                        var index = range.index + range.length;
+                        quill.insertEmbed(range.index, 'image', data.src);
+                    }
+                })
+            }
+        });
+        Imageinput.click();
+    }
+</script>
+
+{% endblock %}
