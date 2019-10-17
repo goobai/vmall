@@ -82,14 +82,17 @@
     methods: {
       onChange() {
         if (this.activeStatus == 1) {
-          this.orderStatus = 5
+          this.orderStatus = 9
         } else if (this.activeStatus == 2) {
           this.orderStatus = 0
         } else if (this.activeStatus == 3) {
           this.orderStatus = 2
         } else if (this.activeStatus == 4) {
           this.orderStatus = 3
-        } else {
+        }
+        else if (this.activeStatus == 5) {
+          this.orderStatus = 5
+        }else {
           console.log()
         }
         this.getOrders()

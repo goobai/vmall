@@ -1,27 +1,21 @@
 import time
-import pymysql
-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import pymysql
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker())
 engine = None
-
-content="""   华为(HUAWEI)MateBook 13 全面屏轻薄性能笔记本(英特尔酷睿i3 8G 256G 集显 office 2K 一碰传)灰 """
-url = """//img12.360buyimg.com/mobilecms/s372x372_jfs/t1/62098/13/3656/36467/5d1c955cEc9b30980/f9d73f62844a76e1.jpg!q70.dpg.webp"""
 
 
 class Customer(Base):
     __tablename__ = "customer"
     id = Column(Integer, primary_key=True)
     name = Column(String(255))
-    url = Column(String(255))
-    content = Column(String(128))
 
 
-def init_sqlalchemy(dbname='mysql+pymysql://mysql:Goobai!1@localhost/aipycms?charset=utf8'):
+def init_sqlalchemy(dbname='mysql+pymysql://mysql:Goobai!1@localhost/aipycms?charset=utf8mb4'):
     global engine
     engine = create_engine(dbname, echo=False)
     DBSession.remove()
@@ -36,8 +30,6 @@ def test_sqlalchemy_orm(n=100000):
     for i in range(n):
         customer = Customer()
         customer.name = 'NAME ' + str(i)
-        customer.content = content
-        customer.url = url
         DBSession.add(customer)
         if i % 1000 == 0:
             DBSession.flush()
@@ -51,7 +43,7 @@ def test_sqlalchemy_orm_pk_given(n=100000):
     init_sqlalchemy()
     t0 = time.time()
     for i in range(n):
-        customer = Customer(id=i + 1, name="NAME " + str(i),content=content,url=url)
+        customer = Customer(id=i + 1, name="NAME " + str(i))
         DBSession.add(customer)
         if i % 1000 == 0:
             DBSession.flush()
@@ -64,13 +56,11 @@ def test_sqlalchemy_orm_pk_given(n=100000):
 def test_sqlalchemy_orm_bulk_save_objects(n=100000):
     init_sqlalchemy()
     t0 = time.time()
-    n1 = n
-    while n1 > 0:
-        n1 = n1 - 10000
+    for chunk in range(0, n, 10000):
         DBSession.bulk_save_objects(
             [
-                Customer(name="NAME " + str(i),content=content,url=url)
-                for i in range(min(10000, n1))
+                Customer(name="NAME " + str(i))
+                for i in range(chunk, min(chunk + 10000, n))
             ]
         )
     DBSession.commit()
@@ -82,17 +72,14 @@ def test_sqlalchemy_orm_bulk_save_objects(n=100000):
 def test_sqlalchemy_orm_bulk_insert(n=100000):
     init_sqlalchemy()
     t0 = time.time()
-    n1 = n
-    while n1 > 0:
-
+    for chunk in range(0, n, 10000):
         DBSession.bulk_insert_mappings(
             Customer,
             [
-                dict(name="NAME " + str(i),content=content,url=url)
-                for i in range(min(10000, n1))
+                dict(name="NAME " + str(i))
+                for i in range(chunk, min(chunk + 10000, n))
             ]
         )
-        n1 = n1 - 10000
     DBSession.commit()
     print(
         "SQLAlchemy ORM bulk_insert_mappings(): Total time for " + str(n) +
@@ -104,31 +91,31 @@ def test_sqlalchemy_core(n=100000):
     t0 = time.time()
     engine.execute(
         Customer.__table__.insert(),
-        [{"name": 'NAME ' + str(i),"content":content,"content":content} for i in range(n)]
-    )  ##==> engine.execute('insert into ttable (name) values ("NAME"), ("NAME2")')
+        [{"name": 'NAME ' + str(i)} for i in range(n)]
+    )
     print(
         "SQLAlchemy Core: Total time for " + str(n) +
         " records " + str(time.time() - t0) + " secs")
 
 
-def init_sqlite3(dbname):
-    conn = pymysql.connect(dbname)
+def init_sqlite3():
+    conn = pymysql.connect("localhost", "mysql", "Goobai!1", "aipycms")
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS customer")
     c.execute(
-        "CREATE TABLE customer (id INTEGER NOT NULL, "
+        "CREATE TABLE customer (id INTEGER NOT NULL AUTO_INCREMENT,"
         "name VARCHAR(255), PRIMARY KEY(id))")
     conn.commit()
     return conn
 
 
-def test_sqlite3(n=100000, dbname='sqlite3.db'):
-    conn = init_sqlite3(dbname)
+def test_sqlite3(n=100000):
+    conn = init_sqlite3()
     c = conn.cursor()
     t0 = time.time()
     for i in range(n):
         row = ('NAME ' + str(i),)
-        c.execute("INSERT INTO customer (name) VALUES (?)", row)
+        c.execute("INSERT INTO customer (name) VALUES (%s)", row)
     conn.commit()
     print(
         "sqlite3: Total time for " + str(n) +
@@ -136,9 +123,9 @@ def test_sqlite3(n=100000, dbname='sqlite3.db'):
 
 
 if __name__ == '__main__':
-    test_sqlalchemy_orm(100000)
-    test_sqlalchemy_orm_pk_given(100000)
-    test_sqlalchemy_orm_bulk_save_objects(100000)
-    test_sqlalchemy_orm_bulk_insert(100000)
+    # test_sqlalchemy_orm(100000)
+    # test_sqlalchemy_orm_pk_given(100000)
+    # test_sqlalchemy_orm_bulk_save_objects(100000)
+    # test_sqlalchemy_orm_bulk_insert(100000)
     test_sqlalchemy_core(100000)
     # test_sqlite3(100000)

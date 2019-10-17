@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
+from flask_docs import ApiDoc
 import logging
 import datetime
 
@@ -20,6 +21,7 @@ mail = Mail()
 mail.init_app(app)
 # redis_client = FlaskRedis(app)
 redis_client = FlaskRedis(app, decode_responses=True)
+ApiDoc(app)
 
 
 # logging.basicConfig(filename="./log.txt", format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -35,7 +37,6 @@ def create_app(config_class=Config):
     reset_db(app)
     log_slow_query(app)
     reg_blueprints(app)
-    app.id_pool = []
     # excute_sql(app)
     return app
 

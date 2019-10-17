@@ -62,5 +62,5 @@ class Config(object):
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER') or '15208177009@163.com'
     MAIL_MAX_EMAILS = os.environ.get('MAIL_MAX_EMAILS') or 10
     JWT_TOKEN_LOCATION = ("headers", "json", "query_string")
-
+    API_DOC_MEMBER = ['api', 'admin']
     WePay = {}

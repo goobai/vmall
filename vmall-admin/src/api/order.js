@@ -13,3 +13,11 @@ export const getOrderList = (params) => axios.get('/admin/order/list', {
   }
 })
 
+export const searchOrder = (params) => axios.get('/admin/order/search', {
+  params: {
+    'page': params.page,
+    'limit': params.limit,
+    'order_id': params.formKeys.order_id,
+    'order_status': params.formKeys.order_status,
+  }
+})

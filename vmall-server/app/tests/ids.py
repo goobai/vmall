@@ -62,10 +62,22 @@ def home():
 @app.route('/query/<id>')
 def query(id):
     article = Article.query.filter_by(id=id).first()
+
     if article:
         return jsonify(id=article.id)
     else:
         return jsonify(msg="not founded")
+
+
+@app.route('/insert')
+def insert():
+    article = Article(title="you are loser", content="i cant agree", like=1)
+    db.session.add(article)
+    db.session.commit()
+    res = db.session.execute("select * from article where id<10")
+    for re in res:
+        print(re)
+    return jsonify(msg="suc")
 
 
 if __name__ == '__main__':

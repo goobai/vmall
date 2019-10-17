@@ -44,9 +44,6 @@
   import {Checkbox, CheckboxGroup, Button, Toast} from 'vant'
   import {mapState} from 'vuex'
   import BScroll from '@better-scroll/core'
-  import io from 'socket.io-client';
-
-  const socket = io('http://localhost:5000');
   export default {
     name: 'Chat',
     components: {

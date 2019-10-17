@@ -11,7 +11,7 @@ def make_shell_context():
     return {'User': User, 'Message': Message, 'db': db, 'Article': Article, 'Comment': Comment}
 
 
-# from gevent.pywsgi import WSGIServer
+from gevent.pywsgi import WSGIServer
 #
 # if __name__ == '__main__':
 #     http_server = WSGIServer(('127.0.0.1', 5000), app)

@@ -7,6 +7,10 @@ from werkzeug.utils import secure_filename
 
 @bp.route('/image/add', methods=['POST'])
 def image_add():
+    """
+    添加图片
+    :return:
+    """
     if request.method == 'POST':
         file = request.files['file']
         if file and file.filename:
@@ -21,5 +25,10 @@ def image_add():
 
 @bp.route('/image/<filename>')
 def image(filename):
+    """
+    查看图片
+    :param filename:
+    :return:
+    """
     logo_path = current_app.config['UPLOAD_FOLDER']
     return send_from_directory(logo_path, filename=filename)

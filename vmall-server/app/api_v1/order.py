@@ -111,10 +111,12 @@ def order_info():
         返回：订单号 ，商品 ，总价"""
     uid = get_jwt_identity()
     # 订单状态 0:生成订单，待付款 ；1：付款完成，待发货；2：发货完成，物流中，待确认收货 ；3：确认收货，待评价 4：订单完成
+    # 5： 已取消
     order_status = request.json.get('orderStatus')
     offset = request.json.get('offset')
     limit = 10
     msg = "订单查询成功！"
+    data=[]
     if order_status == 0:
         orders = Order.query.filter_by(user_id=uid, order_status=order_status).order_by(desc(Order.create_time)).limit(
             limit).offset(offset).all()
@@ -124,28 +126,28 @@ def order_info():
         orders = Order.query.filter_by(user_id=uid, order_status=order_status).order_by(desc(Order.create_time)).limit(
             limit).offset(offset).all()
         data = [order.to_dict() for order in orders]
-        return jsonify(code=1, data=data, msg=msg)
     elif order_status == 2:
         orders = Order.query.filter_by(user_id=uid, order_status=order_status).order_by(desc(Order.create_time)).limit(
             limit).offset(offset).all()
 
         data = [order.to_dict() for order in orders]
-        return jsonify(code=1, data=data, msg=msg)
     elif order_status == 3:
         orders = Order.query.filter_by(user_id=uid, order_status=order_status).order_by(desc(Order.create_time)).limit(
             limit).offset(offset).all()
         data = [order.to_dict() for order in orders]
-        return jsonify(code=1, data=data, msg=msg)
     elif order_status == 4:
         orders = Order.query.filter_by(user_id=uid, order_status=order_status).order_by(desc(Order.create_time)).limit(
             limit).offset(offset).all()
         data = [order.to_dict() for order in orders]
-        return jsonify(code=1, data=data, msg=msg)
     elif order_status == 5:
+        orders = Order.query.filter_by(user_id=uid, order_status=order_status).order_by(desc(Order.create_time)).limit(
+            limit).offset(offset).all()
+        data = [order.to_dict() for order in orders]
+    elif order_status == 9:
+        # 查询所有订单
         orders = Order.query.filter_by(user_id=uid).order_by(desc(Order.create_time)).limit(
             limit).offset(offset).all()
-        print(orders)
         data = [order.to_dict() for order in orders]
-        return jsonify(code=1, data=data, msg=msg)
     else:
         return jsonify(code=0, msg="查询失败")
+    return jsonify(code=1, data=data, msg=msg)

@@ -10,9 +10,13 @@ from sqlalchemy import or_
 def index():
     pass
 
-# 注册
+
 @bp.route('/user/reg', methods=['POST'])
 def register():
+    """
+    用户注册
+    :return:
+    """
     if request.method == 'POST':
         username = request.json.get('username')
         email = request.json.get('email')
@@ -31,9 +35,12 @@ def register():
         return jsonify({'code': 0, 'data': {}, "msg": "请求错误，不支持该方法"})
 
 
-# 登陆
 @bp.route('/user/login', methods=['POST'])
 def login():
+    """
+    用户登陆
+    :return:
+    """
     if request.method == 'POST':
         username = request.json.get('username')
         password = request.json.get('password')
@@ -59,6 +66,11 @@ def login():
 @bp.route('/user/<username>/changepwd', methods=['POST'])
 @jwt_required
 def change_pwd(username):
+    """
+    修改密码
+    :param username:
+    :return:
+    """
     if request.method == 'POST':
         username = request.json.get('username')
         password = request.json.get('password')
@@ -79,47 +91,6 @@ def change_pwd(username):
             )
         else:
             return jsonify({'code': 0, 'data': {}, "msg": "Bad username or password"})
-
-
-#  个人评论
-@bp.route('/user/<username>/comments', methods=['GET'])
-def comments(username):
-    limit = request.args.get('limit', 50)  #
-    offset = request.args.get('offset', 0)
-    user = User.query.filter_by(username=username).first()
-    items = Comment.query.filter_by(commentator_id=user.id).limit(limit).offset(offset).all()
-    count = Comment.query.filter_by(commentator_id=user.id).count()
-    return jsonify(
-        {'code': 1, 'data': {
-            'items': [item.to_dict() for item in items],
-            'count': count
-        }, 'message': '查询成功！'}
-
-    )
-
-
-# 个人所有文章
-@bp.route('/<username>/articles', methods=['GET'])
-@jwt_required
-def activities(username):
-    return str(username)
-
-
-# 关注列表
-@bp.route('/<username>/follow')
-def follow(username):
-    return str(username)
-
-
-# 粉丝列表
-@bp.route('/<username>/follower')
-def follower(username):
-    return str(username)
-
-
-@bp.route('/<username>/p')
-def p(username, pid):
-    return str(username, pid)
 
 
 @bp.route('/user/card', methods=['GET'])
@@ -149,9 +120,6 @@ def address():
         addrId = request.args.get('id')
         if addrId:
             data = UserAddress.query.filter_by(user_id=user_id, id=addrId).first()
-
-            print(True if int(data.isDefault) else False)
-            print(data.to_dict())
             if data:
                 return jsonify({'code': 1, 'data': data.to_dict(), 'message': '查询成功！'})
             else:
@@ -201,7 +169,6 @@ def address():
             else:
                 return jsonify(code=0, data="此用户地址不存在！", msg="删除失败")
         else:
-            print(request.json)
             return jsonify(code=0, msg="不支持当前操作！")
 
 

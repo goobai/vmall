@@ -3,7 +3,7 @@
  */
 // 文章模块接口
 
-import {getOrderList} from './order'
+import {getOrderList,searchOrder} from './order'
 import {getProductList, addProduct, editProduct, delProduct} from './product'
 import {userLogin} from './user'
 import {getShopList, addShop, editShop, delShop} from './shop'
@@ -13,5 +13,6 @@ import {getShopList, addShop, editShop, delShop} from './shop'
 export default {
   getProductList, addProduct, editProduct, delProduct,
   userLogin,
-  getShopList, addShop, editShop, delShop
+  getShopList, addShop, editShop, delShop,
+  getOrderList,searchOrder
 }
