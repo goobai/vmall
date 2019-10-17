@@ -1,5 +1,5 @@
 # vmall
 
-### vmall-admin  后台管理
-### vmall-server flask实现的接口
-### vmall-vue   业务界面
+### vmall-admin  [后台管理界面](./vmall-admin)
+### vmall-server  [Api接口](./vmall-server)
+### vmall-vue   [用户使用界面](./vmall-vue)
