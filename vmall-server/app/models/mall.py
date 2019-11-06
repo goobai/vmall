@@ -312,7 +312,7 @@ class Order(db.Model):
     order_status = db.Column(db.SmallInteger,
                              default=0)  # 订单状态状态 0:待付款 ；1：待发货；2：已发货，物流中，待确认收货 ；3：确认收货，待评价 4：评价完商品，订单完成 5:已取消
     status = db.Column(db.SmallInteger, default=0)  # 状态
-    remark = db.Column(db.String)  # 订单备注
+    remark = db.Column(db.String(256))  # 订单备注
 
     def to_dict(self):
         products = OrderProduct.query.filter_by(order_id=self.order_id).all()

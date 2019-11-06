@@ -9,6 +9,6 @@ services:
     volumes:
       - ./vmall-server:/usr/src/vmall-service
     ports:
-      - 5000:5000
+      - "127.0.0.1:5000:5000"
     stdin_open: true
     tty: true
