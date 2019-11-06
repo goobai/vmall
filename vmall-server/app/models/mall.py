@@ -1,6 +1,8 @@
-from app import db
+from app import db, redis_client
 from datetime import datetime
 from app.models import Img
+from app.utils import cache1redis, get4cache
+import json
 
 
 class Category(db.Model):
@@ -12,6 +14,29 @@ class Category(db.Model):
     parent_id = db.Column(db.SmallInteger)  # 父分类id
     index = db.Column(db.SmallInteger)  # 分类的index：一级、二级、三级...
     status = db.Column(db.SmallInteger, default=0)  # 状态
+
+    @staticmethod
+    def get_category_list():
+        """
+        redis缓存商品分类树降低数据库查询压力
+        :return:
+        """
+
+        category_list = get4cache('category:tree')
+        if category_list is not None:
+            return json.loads(category_list)
+        else:
+            root_category = Category.query.filter_by(index=1, parent_id=0).all()
+
+            data = [{"label": root.name, "value": root.id, "children": []} for root in root_category]
+            for ds in data:
+                second_category = Category.query.filter_by(index=2, parent_id=ds["value"]).all()
+                ds["children"] = [{"label": root.name, "value": root.id, "children": []} for root in second_category]
+                for dt in ds["children"]:
+                    third_category = Category.query.filter_by(index=3, parent_id=dt["value"]).all()
+                    dt["children"] = [{"label": root.name, "value": root.id, } for root in third_category]
+            cache1redis('category:tree', json.dumps({'tree': data}))
+            return {'tree': data}
 
     def to_dict(self):
         return {
@@ -27,7 +52,7 @@ class ProductSpu(db.Model):
     """商品spu：standard product unit"""
     id = db.Column(db.BIGINT, primary_key=True)
     brand_id = db.Column(db.Integer)  # 商品品牌id
-    cid = db.Column(db.SmallInteger)  # 商品分类编号
+    category_id = db.Column(db.SmallInteger)  # 商品分类编号
     shop_id = db.Column(db.SmallInteger)  # 店铺 id
     title = db.Column(db.String(256))  # 商品标题
     name = db.Column(db.String(256))  # 商品名称
@@ -104,7 +129,7 @@ class ProductSpu(db.Model):
 class ProductSku(db.Model):
     """商品sku:stock keeping unit"""
     id = db.Column(db.BIGINT, primary_key=True)
-    cid = db.Column(db.SmallInteger)  # 商品分类编号
+    category_id = db.Column(db.SmallInteger)  # 商品分类编号
     spu_id = db.Column(db.BIGINT)  # 商品id
     shop_id = db.Column(db.SmallInteger)  # 店铺 id
     name = db.Column(db.String(256))  # 商品名称
@@ -112,6 +137,7 @@ class ProductSku(db.Model):
     price = db.Column(db.Integer)  # 当前价格
     stock = db.Column(db.Integer)  # 库存
     sales = db.Column(db.Integer)  # 销量
+    default_img_id = db.Column(db.BIGINT)  # 默认图片id
     comments = db.Column(db.String(64))  # 评论数量
     create_time = db.Column(db.DateTime(), default=datetime.utcnow())
     modify_time = db.Column(db.DateTime(), default=datetime.utcnow())
@@ -195,13 +221,26 @@ class Spec(db.Model):
 
 class SpecValue(db.Model):
     """
-    规格表
+    规格值表
     """
     id = db.Column(db.Integer(), primary_key=True)
     spec_id = db.Column(db.BIGINT)  # 规格id
     value = db.Column(db.String(32))  # 商品规格值
     create_time = db.Column(db.DateTime(), default=datetime.utcnow())
     modify_time = db.Column(db.DateTime(), default=datetime.utcnow())
+    status = db.Column(db.SmallInteger, default=0)  # 状态
+
+
+class SpuSpec(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    spu_id = db.Column(db.BIGINT)  # spu id
+    spec_id = db.Column(db.BIGINT)  # 规格id
+    status = db.Column(db.SmallInteger, default=0)  # 状态
+
+
+class SpuSpecValue(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    spu_id = db.Column(db.BIGINT)  # spu id
     status = db.Column(db.SmallInteger, default=0)  # 状态
 
 
@@ -213,8 +252,6 @@ class SkuSpecValue(db.Model):
     sku_id = db.Column(db.BIGINT)  # sku id
     spec_id = db.Column(db.Integer)  # 规格id
     spec_value_id = db.Column(db.BIGINT)  # 规格值id
-    create_time = db.Column(db.DateTime(), default=datetime.utcnow())
-    modify_time = db.Column(db.DateTime(), default=datetime.utcnow())
     status = db.Column(db.SmallInteger, default=0)  # 状态
 
 
@@ -275,6 +312,7 @@ class Order(db.Model):
     order_status = db.Column(db.SmallInteger,
                              default=0)  # 订单状态状态 0:待付款 ；1：待发货；2：已发货，物流中，待确认收货 ；3：确认收货，待评价 4：评价完商品，订单完成 5:已取消
     status = db.Column(db.SmallInteger, default=0)  # 状态
+    remark = db.Column(db.String)  # 订单备注
 
     def to_dict(self):
         products = OrderProduct.query.filter_by(order_id=self.order_id).all()
@@ -478,3 +516,7 @@ class RecommendProduct(db.Model):
             "img": [img.url for img in image] if [img.url for img in image] else [
                 "//img11.360buyimg.com/n1/s450x450_jfs/t1/29020/33/6838/263557/5c661ff4Ea61427ec/36f8fb23dc003d39.jpg"]
         }
+
+
+class ProductComment(db.Model):
+    id = db.Column(db.BIGINT, primary_key=True)

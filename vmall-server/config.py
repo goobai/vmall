@@ -10,7 +10,7 @@ class Config(object):
     #                           'sqlite:///' + os.path.join(basedir, 'app.db')
     # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://mysql:Goobai!1@192.168.16.129/aipycms?charset=utf8"
     # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://mysql:Goobai!1@192.168.16.129/aipycms?charset=utf8"
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://mysql:Goobai!1@localhost/aipycms?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI =os.environ.get('MySql_URL') or "mysql+pymysql://mysql:Goobai!1@localhost/aipycms?charset=utf8mb4"
     # SQLALCHEMY_ECHO = True  # 打印执行sql
     SQLALCHEMY_POOL_SIZE = 10  # 数据库连接 池的大小。默认是5
     # SQLALCHEMY_ECHO = False  # 不打印执行sql

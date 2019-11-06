@@ -1,7 +1,7 @@
 from . import bp
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import *
-from flask import jsonify, request
+from flask import jsonify, request,send_file
 import datetime
 
 
@@ -137,3 +137,56 @@ def product_deliver():
         order.order_status = 2  # 订单状态修改成已发货
         db.session.commit()
         return jsonify(code=1, data='', msg='发货成功！')
+
+
+@bp.route('/product/category/list')
+def product_category_list():
+    import os
+    print(os.environ.get('REDIS_URL'))
+    os.environ.get('REDIS_URL')
+    # root_category = Category.query.filter_by(index=1, parent_id=0).all()
+    #
+    # data = [{"label": root.name, "value": root.id, "children": []} for root in root_category]
+    # for ds in data:
+    #     second_category = Category.query.filter_by(index=2, parent_id=ds["value"]).all()
+    #     ds["children"]=[{"label": root.name, "value": root.id, "children": []} for root in second_category]
+    #     for dt in ds["children"]:
+    #         third_category = Category.query.filter_by(index=3, parent_id=dt["value"]).all()
+    #         dt["children"] = [{"label": root.name, "value": root.id, } for root in third_category]
+    data = Category.get_category_list()
+    return jsonify(code=1, data=data.get('tree'))
+
+
+@bp.route('/product/sku')
+def product_sku_create():
+    if request.method == "POST":
+        spu_id = request.json.get("spuId")
+        price = request.json.get("price")
+        name = request.json.get("name")
+        specs_list = request.json.get("specsList")  # [{ specsId:int ,specValueId:123}]
+        stock = request.json.get("stock")
+        default_img_id = request.json.get("defaultImgId")
+
+    if request.method == "GET":
+        skuId = request.args.get("id")
+        sku = ProductSku.query.filter_by(id=skuId).first()
+        return jsonify(data=sku.to_dict())
+        sql = r'''select * from article where id= :id'''
+        res = db.session.execute(sql, {"id": 1}).fetchall()
+        print(res)
+        return jsonify(data=[str(row) for row in res])
+
+
+@bp.route('/product/sku/list')
+def product_sku_list():
+    pass
+
+
+@bp.route('/product/spu')
+def product_spu_create():
+    pass
+
+
+@bp.route('/product/spu/list')
+def product_spu_list():
+    pass

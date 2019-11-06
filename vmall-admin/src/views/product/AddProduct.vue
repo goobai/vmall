@@ -1,5 +1,14 @@
 <template>
+
   <div class="createPost-container">
+    <div class="CategorySelect">
+      <span class="demonstration">分类选择</span>
+      <el-cascader size="medium "
+                   v-model="categoryValue"
+                   :options="categoryOptions"
+                   :props="{ expandTrigger: 'hover' }"
+                   @change="handleChange"></el-cascader>
+    </div>
     <el-form :model="productForm" :rules="rules" ref="productForm" label-width="150px" class="demo-ruleForm">
 
       <div><h3 style="width: 150px;text-align: right;padding: 0 12px 0 0;font-weight: 700">基础信息</h3></div>
@@ -42,7 +51,9 @@
 
             <el-checkbox-group @change="onCheckBoxChange"
                                v-model="checkedSpecs.prop2">
-              <el-checkbox v-for="(value,index) in prop2" :key="index" :label="value"><el-input v-model="prop2[index]"></el-input></el-checkbox>
+              <el-checkbox v-for="(value,index) in prop2" :key="index" :label="value">
+                <el-input v-model="prop2[index]"></el-input>
+              </el-checkbox>
             </el-checkbox-group>
 
           </template>
@@ -143,6 +154,8 @@
     name: "AddProduct",
     data() {
       return {
+        categoryValue: [],
+        categoryOptions: [],
         productForm: {
           name: 'Mate 30 Pro',
           title: 'Mate 30 Pro AI照亮月环',
@@ -172,6 +185,10 @@
       };
     },
     methods: {
+
+      handleChange(value) {
+        console.log(value);
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -294,8 +311,16 @@
         return isRightType && isLt2M;
       }
       ,
-
+      getProductCategoryList(){
+        this.$api.getProductCategoryList().then(res=>{
+          this.categoryOptions=res.data
+        })
+      }
+    },
+    created() {
+      this.getProductCategoryList()
     }
+
   }
 </script>
 

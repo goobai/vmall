@@ -32,6 +32,6 @@ export const editProduct = (params) => axios.post('/admin/product/update', {
 export const delProduct = (params) => axios.post('/admin/product/del', {
   id: params.id
 })
-
+export const getProductCategoryList = () => axios.get('/admin/product/category/list')
 
 

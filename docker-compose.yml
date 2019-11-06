@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  vmall-service:
+    build: ./vmall-server
+    environment:
+      REDIS_URL: "redis://:goobai777@138.128.213.136/0"
+      MySql_URL: "mysql+pymysql://mysql:Goobai!1@138.128.213.136/aipycms?charset=utf8"
+    volumes:
+      - ./vmall-server:/usr/src/vmall-service
+    ports:
+      - 5000:5000
+    stdin_open: true
+    tty: true
