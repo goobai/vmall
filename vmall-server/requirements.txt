@@ -24,7 +24,7 @@ kombu==4.6.5
 Mako==1.2.2
 MarkupSafe==1.1.1
 more-itertools==7.2.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 PyMySQL==0.9.3
 python-dateutil==2.8.1
 python-editor==1.0.4
